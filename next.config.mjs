@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    basePath: "",
+    basePath: "/rs_vision_documentation",
     output: "export",
     reactStrictMode: true,
     images: { unoptimized: true }
