@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPS Broadcast</title>
+</head>
+<body>
+    <h3>GPS Broadcast</h3>
+
+    <div id="positionInfo">
+        <h4>Current Position</h4>
+        <p>Latitude: <span id="latitude"></span></p>
+        <p>Longitude: <span id="longitude"></span></p>
+        <p>Altitude: <span id="altitude"></span></p>
+        <p>Accuracy: <span id="accuracy"></span> meters</p>
+    </div>
+
+
+    <script>
+        let ws;
+        let isBroadcasting = false;
+        
+        async function startGpsBroadcast() {
+            if (isBroadcasting) return;
+            try {
+                startSendingGpsLocation();
+                
+            } catch (error) {
+                console.error('Error accessing gps:', error);
+            }
+        }
+
+        function startSendingGpsLocation() {
+            if ( isBroadcasting ){
+                console.error('broadcasting already.');
+                return;
+            }
+            
+            isBroadcasting = true;
+            navigator.geolocation.watchPosition(position => {
+                const { latitude, longitude, accuracy, altitude } = position.coords;
+                const timestamp = performance.now()/1000;
+                const geolocationData = { timestamp, latitude, longitude, altitude };
+                document.getElementById('latitude').textContent = latitude.toFixed(6);
+                document.getElementById('longitude').textContent = longitude.toFixed(6);
+                document.getElementById('accuracy').textContent = accuracy.toFixed(2);
+                document.getElementById('altitude').textContent = altitude.toFixed(6);
+                ws.send(JSON.stringify(geolocationData));
+            });
+        }
+
+        function stopGpsBroadcast() {
+            isBroadcasting = false;
+        }
+    </script>
+
+    <button onclick="startGpsBroadcast()">Start Broadcast</button>
+    <button onclick="stopGpsBroadcast()">Stop Broadcast</button>
+</body>
+</html>

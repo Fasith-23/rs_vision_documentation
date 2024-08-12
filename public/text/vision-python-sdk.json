@@ -1,0 +1,87 @@
+{
+    "headings": [
+      {
+        "title": "Vision Python SDK",
+        "children": [
+        { "title": "Sensor Backend" },
+        { "title": "GeolocatAr" },
+        { "title": "Live Filters" }
+          
+        ]
+      }
+    ],
+    "content": [
+      {
+        "type": "heading",
+        "level": 1,
+        "id": "vision-python-sdk",
+        "text": "Vision Python SDK"
+      },
+      {
+        "type": "paragraph",
+        "text": "The Vision Python SDK is built using FastAPI and Python, leveraging Python's efficiency in data processing. This SDK is designed to handle and process large volumes of data efficiently, making it well-suited for real-time applications. It utilizes external services for data processing, enabling the integration of advanced functionalities and third-party tools to enhance its capabilities. By employing FastAPI, the SDK ensures high performance and easy scalability, allowing for quick responses and streamlined API interactions. The combination of Python's robust data handling and FastAPI's speed and simplicity results in a powerful and efficient solution for managing and processing vision-related data streams."
+      },
+      {
+        "type": "component0",
+        "text": "The Vision Python SDK follows a standard FastAPI architecture, ensuring a clean separation of concerns and modularity. At its core, the architecture comprises several key components.",
+        "name0": "App Folder: ",
+        "text0": "This folder contains all the components of the FastAPI application, ensuring a clean and organized structure. Inside this folder, you typically have subfolders and modules for different aspects of the application, such as routes, models, schemas, and utilities.",
+        "name1": "main.py: ",
+        "text1": "This is the entry point of the FastAPI application. It initializes the FastAPI app instance, includes the routers, and defines any middleware or event handlers.",
+        "name2": "router.py: ",
+        "text2": "This module defines the routing logic of the application, similar to controllers in the .NET architecture. It includes different endpoints and organizes them logically, often grouping related routes together. It helps in maintaining clean and readable code.",
+        "name3": "handler.py: ",
+        "text3": "This file contains the business logic and data processing functions. Handlers are responsible for the core functionality, such as interacting with databases, processing data, and implementing the business rules. "
+      },
+      {
+        "type": "image",
+        "src": "/images/vision-python-sdk.png",
+        "width": 1199,
+        "height": 490,
+        "alt": "Vision Python SDK"
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id":   "sensor-backend",
+        "text": "Sensor Backend"
+      },
+      {
+        "type": "paragraph",
+        "text": "The Sensor Backend establishes a WebSocket connection with the vision_sensor_module to retrieve sensor data from its queues. It includes a router for managing FastAPI routes and has three data handlers for camera, GPS, and IMU. Each handler is implemented as a class containing three functions: subscribe_to_device(), get_data(), and unsubscribe_from_device()."
+      },
+      {
+        "type": "paragraph",
+        "text": "The subscribe_to_device() function establishes a WebSocket connection with the broadcast network communications endpoint, allowing for real-time data streaming. The get_data() function retrieves data from the vision_sensor_module's queues and places it into the respective data handler's queues. Finally, the unsubscribe_from_device() function closes the WebSocket connection, effectively stopping the data stream. Other components, such as GeolocatAr and Live Filters, can access the data from these queues by invoking the appropriate functions of these handler classes, ensuring a seamless and efficient flow of sensor data throughout the system."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id":   "geolocatar",
+        "text": "GeolocatAr"
+      },
+      {
+        "type": "image",
+        "src": "/images/geolocatar-vps.png",
+        "width": 1579,
+        "height": 494,
+        "alt": "GeolocatAr"
+      },
+      {
+        "type": "paragraph",
+        "text": "The GeolocatAr component features a router that receives all endpoint requests from the Vision Resource Service and directs them to the corresponding functions in the geolocatar_handler. The trigger_geolocatar_stream() function accepts a WebSocket connection from the Vision Resource Service and then it subscribes to the camera, GPS, and IMU data handler queues from sensor_backend to initiate the data stream. The get_geolocatar_stream() function processes the incoming camera, GPS, and IMU data by sending it to an external sensor fusion algorithm service, which estimates and returns the geolocation data. Finally, the close_geolocatar_stream() function unsubscribes from the camera, GPS, and IMU data handler queues. It closes the WebSocket connection from the Vision Resource Service."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id":   "live-filters",
+        "text": "Live Filters"
+      },
+      {
+        "type": "paragraph",
+        "text": "The Live Filters component shares the same architecture as GeolocatAr, with a router handling endpoint requests from the Vision Resource Service and directing them to the appropriate functions in live_filters_handler. The trigger_live_filters_stream() function establishes a WebSocket connection from the Vision Resource Service and then, subscribes to the camera data handler queue alone from the sensor_backend. The get_live_filters_stream() function processes the camera data by applying an external set of live filter algorithms. Finally, the close_live_filters_stream() function unsubscribes from the camera data handler queue and closes the WebSocket connection from the Vision Resource Service."
+      }
+
+    ]
+  }
+  

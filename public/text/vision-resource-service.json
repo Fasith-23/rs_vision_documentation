@@ -1,0 +1,98 @@
+{
+    "headings": [
+      {
+        "title": "Vision Resource Service",
+        "children": [
+        { "title": "Portal" },
+        { "title": "GeolocatAr" },
+        { "title": "Live Filters" }
+          
+        ]
+      }
+    ],
+    "content": [
+      {
+        "type": "heading",
+        "level": 1,
+        "id": "vision-resource-service",
+        "text": "Vision Resource Service"
+      },
+      {
+        "type": "paragraph",
+        "text": "The Vision Resource Service is a component of the rs_vision architecture, which utilises ASP.NET Core Web API 7. It is designed to smoothly integrate with a database, such as MongoDB, to ensure efficient data management and retrieval. This service is designed to receive data stream triggers from the frontend, which are then redirected to a Python SDK that handles complex data processing tasks. By harnessing the impressive capabilities of C#, the Vision Resource Service guarantees a strong, scalable, and high-performing approach to managing data streams. This enables seamless real-time processing and analysis. This integration enhances the service by enabling dynamic and responsive interactions between the frontend and backend systems. This optimisation improves the overall user experience and operational efficiency."
+      },
+      {
+        "type": "component0",
+        "text": "The Vision Resource Service follows a standard .NET architecture, ensuring a clean separation of concerns and modularity. At its core, the architecture comprises several key components.",
+        "name0": "Controllers: ",
+        "text0": "These define the endpoints for accessing the various functionalities of the module. Controllers are responsible for handling HTTP requests, processing input, and returning responses. They delegate the actual processing tasks to handlers, providers, or services.",
+        "name1":"Handlers: ",
+        "text1": "Handlers contain functions designed to manage live data. These functions perform the necessary logic and operations required to process real-time data streams, ensuring that dynamic data is handled efficiently and effectively.",
+        "name2": "Providers: ",
+        "text2": "Providers are tasked with managing static data. They encapsulate the logic needed to access, manipulate, and serve static data from the database or other persistent storage solutions, providing a consistent interface for data retrieval and management.",
+        "name3": "DbModels: ",
+        "text3": "Models define the complete data structure used within the application. They represent the entities in the database, ensuring that the data is accurately and consistently structured.",
+        "name4":"DTOs (Data Transfer Objects): ",
+        "text4": "DTOs define the data structures that are exposed to the user. They simplify and shape the data to be displayed, ensuring that only the necessary information is presented, enhancing security and performance.",
+        "name5": "Dependency Injection: ",
+        "text5": "This design pattern is used to achieve Inversion of Control (IoC) between classes and their dependencies. It allows for the decoupling of service lifetimes and the creation of flexible, testable, and maintainable code."
+      },
+      {
+        "type": "image",
+        "src": "/images/vision-resource-service.png",
+        "width": 1199,
+        "height": 446,
+        "alt": "Vision Resource Service"
+      },
+      {
+        "type": "paragraph",
+        "text": "Portal, Geolocatar, and Live Filters, all three components are parts of the same .NET architecture but serve distinct functions. The Portal component interacts with an external database via the Resource Database Context, utilizing various providers to manage database operations. On the other hand, both Geolocatar and Live Filters components interface with the external vision_python_sdk to process live data via the PythonSDK module, utilizing handlers to manage the real-time data interactions, enabling dynamic geolocation and filtering capabilities within the system."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id":   "portal",
+        "text": "Portal"
+      },
+      {
+        "type": "image",
+        "src": "/images/portal-vsr.png",
+        "width": 1288,
+        "height": 354,
+        "alt": "Portal"
+      },
+      {
+        "type": "paragraph",
+        "text": "The Portal component of the architecture is responsible for adding and removing images and 3D models to and from the database. The frontend can access these assets by interacting with endpoints defined in the controllers. These controllers invoke functions specified in the providers, which implement the IAssetProvider interface. This interface facilitates dependency injection, ensuring that providers are injected as singletons. The providers perform CRUD (Create, Read, Update, Delete) operations on the database, utilizing models and DTOs (Data Transfer Objects) to manage and manipulate the data efficiently. This setup enables seamless interaction between the frontend and the database, ensuring that images and 3D models are properly managed and accessible within the system."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id":   "geolocatar",
+        "text": "GeolocatAr"
+      },
+      {
+        "type": "image",
+        "src": "/images/geolocatar-vsr.png",
+        "width": 1831,
+        "height": 494,
+        "alt": "GeolocatAr"
+      },
+      {
+        "type": "paragraph",
+        "text": "The Geolocatar Controller defines GeolocatAr’s data streams’ endpoints and manages interactions between different components. It calls the functions in Geolocatar Handler, which includes the methods TriggerGeolocatarStream() and CloseGeolocatarStream(). TriggerGeolocatarStream() initiates the subscription to GPS, IMU, and camera devices in the vision_python_sdk. Once the streams are active, and the data are processed, the Listen(/ws-geolocatar-stream) endpoint continuously listens for incoming geolocation data through a WebSocket connection from the vision_python_sdk. This data is then routed through RSignal: GeolocatorHub, a central hub for managing geolocation signals, to vision_next, providing real-time location updates. The CloseGeolocatarStream() method handles the termination of the geolocation data stream. When invoked, it unsubscribes from the GPS, IMU, and camera devices, effectively stopping the data feed from the vision_python_sdk. This ensures that the system can efficiently manage resources by shutting down inactive streams. After closing the stream, the WebSocket connection to Listen(/ws-geolocatar-stream) is also terminated, and the GeolocatorHub stops receiving new geolocation signals, thereby ceasing updates to the vision_next. This mechanism ensures that geolocation data streams can be dynamically started and stopped as needed, optimizing system performance and resource utilization."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id":   "live-filters",
+        "text": "Live Filters"
+      },
+      {
+        "type": "paragraph",
+        "text": "The Live Filters architecture mirrors that of GeolocatAr, with the only difference being the naming. The Live Filters Controller defines the endpoints for live filter data streams and the Live Filters Handler uses TriggerLiveFiltersStream() to initiate the subscription to the camera device alone within the vision_python_sdk. Once the stream is active with the filters applied, the Listen(/ws-live-filters-stream) endpoint continuously monitors incoming data via a WebSocket connection. The received data is routed through RSignal: LiveFiltersHub, to vision_next, providing real-time updates. The CloseLiveFiltersStream() terminates the data stream, unsubscribing from device."
+      }
+
+    ]
+  }
+  

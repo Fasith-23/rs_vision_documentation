@@ -1,0 +1,91 @@
+{
+    "headings": [
+      {
+        "title": "GPS Upsampling",
+        "children": [
+        { "title": "Results" },
+        { "title": "Why Geolocation-based AR?" },
+        { "title": "Methodology" }
+          
+        ]
+      }
+    ],
+    "content": [
+      {
+        "type": "heading",
+        "level": 1,
+        "id": "gps-upsampling",
+        "text": "GPS Upsampling"
+      },
+      {
+        "type": "paragraph",
+        "text": "GPS Upsampling is an abbreviation of the words Geolocation + Locator + AR - which sums up the idea behind this research project, a geolocation-based Augmented Reality application. Augmented Reality (AR) is rapidly transforming how we interact with the world, blending virtual elements with our physical environment to create immersive experiences. The development of effective AR systems hinges on advanced tracking methods that can seamlessly integrate these virtual elements in real-time."
+      },
+      {
+        "type": "paragraph",
+        "text": "The project leverages the rs_vision architecture for data transfer, processing and delivery (and other full stack use-cases). Research is ongoing towards this project, currently, developed a sensor fusion solution for pose tracking using GPS (geolocation) and IMU data. Further developments would be updated which would be in the domains of visual Simultaneous Localisation and Mapping (SLAM) and sensor fusion."
+      },
+      {
+        "type": "heading",
+        "level": 1,
+        "id": "results",
+        "text": "Results"
+      },
+      {
+        "type": "paragraph",
+        "text": "Here are the sensor fused geolocation-based pose tracking results of our research so far."
+      },
+      {
+        "type": "video",
+        "src": "/videos/GPS Upsampling-result-1.mp4",
+        "width": 1480,
+        "height": 598,
+        "alt": "GPS Upsampling"
+      },
+      {
+        "type":"paragraph",
+        "text":"We were able to estimate the 2D pose of the human (myself) moving in a building corridor to a good extent of accuracy with GPS and IMU data. Below are the results compared with actual corridor path."
+      },
+      {
+        "type": "image",
+        "src": "/images/GPS Upsampling-result-1.png",
+        "width": 1480,
+        "height": 500,
+        "alt": "GPS Upsampling"
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id":   "why-geolocation-based-ar?",
+        "text": "Why Geolocation-based AR?"
+      },
+      {
+        "type": "paragraph",
+        "text": "Augmented Reality (AR) is rapidly transforming how we interact with the world, blending virtual elements with our physical environment to create immersive experiences. The development of effective AR systems hinges on advanced tracking methods that can seamlessly integrate these virtual elements in real-time. My thesis focuses on developing a full-stack location-based AR application that leverages geolocation (GPS) and Inertial Measurement Unit (IMU) sensors for pose tracking and examines existing Simultaneous Localization and Mapping (SLAM) algorithms for sensor fusion of visual data. The longterm objective is to offload computation to edge devices, enhancing the efficiency and accuracy of AR applications."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id":   "methodology",
+        "text": "Methodology"
+      },
+      {
+        "type": "image",
+        "src": "/images/methodology.png",
+        "width": 3078,
+        "height": 1120,
+        "alt": "Methodology"
+      },
+      {
+        "type": "paragraph",
+        "text": "The project used a three-part approach with theoretical research, practical work, and application development running simultaneously to foster collaboration. The theoretical stream involved an extensive literature review to understand augmented reality (AR), sensor fusion, web development frameworks, and SLAM (simultaneous localization and mapping) algorithms. This research laid the groundwork for the other streams. In the practical work stream, we deepened the understanding of Full-stack and AR-SLAM, through setting up the rs_vision architecture and testing existing SLAM algorithms. The application development stream focused on building the core AR application incrementally. The first phase enabled users to place and view AR objects at specific locations, with subsequent phases enhancing the app's functionality and features."
+      },
+      {
+        "type": "component2",
+        "name0": "Sensor Fusion",
+        "name1":"GPS Upsampling",
+        "name2":"ORB SLAM"
+      }
+    ]
+  }
+  

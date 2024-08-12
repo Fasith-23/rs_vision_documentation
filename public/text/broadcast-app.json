@@ -1,0 +1,184 @@
+{
+    "headings": [
+      {
+        "title": "Broadcast App",
+        "children": [
+        { "title": "Try it out" },
+          {
+            "title": "Control Panel",
+            "children": [
+              { "title": "Control Panel Router" },
+              { "title": "Camera Frontend Service" },
+              { "title": "GPS Frontend Service" },
+              { "title": "IMU Frontend Service" }
+            ]
+          },
+          { 
+            "title": "Network Communications" ,
+            "children": [
+                {"title":"Network Communications Router"},
+                {"title":"Device Manager"},
+                {"title":"Broadcast Manager"}
+            ]
+          },
+          { "title": "Test Client" }
+        ]
+      }
+    ],
+    "content": [
+      {
+        "type": "heading",
+        "level": 1,
+        "id": "broadcast-app",
+        "text": "Broadcast App"
+      },
+      {
+        "type": "paragraph",
+        "text": "The Broadcast App, part of the rs_vision application architecture, which can function as an independent app, broadcasts and streams sensor data from a device. Built with FAST API, a Python-based backend framework, the app retrievs data from the device and streams them by exposing three API endpoints for an external device to obtain the GPS, IMU, and Camera data. This is facilitated through Websockets. It features three main modules: the control panel for launching the frontend, network communications for managing data streaming, and a test client for stream testing."
+      },
+      {
+        "type": "image",
+        "src": "/images/broadcast-app.png",
+        "width": 629,
+        "height": 310,
+        "alt": "Broadcast App"
+      },
+      {
+        "type": "paragraph",
+        "text": "Test your device&apos;s GPS, IMU, and Camera below, and find the detailed explanations of the app further below :))))."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id": "try-it-out",
+        "text": "Try it out here!!!"
+      },
+      {
+        "type": "component",
+        "name": "BroadcastSection"
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id": "control-panel",
+        "text": "Control Panel"
+      },
+      {
+        "type": "paragraph",
+        "text": "The top layer of the Broadcast App is the control panel frontend, which uses basic HTML and JavaScript to collect sensor data from the device. It interfaces with the device’s camera, GPS, and IMU to gather data streams and broadcast them through WebSockets."
+      },
+      {
+        "type": "image",
+        "src": "/images/control-panel.png",
+        "width": 860,
+        "height": 160,
+        "alt": "Control Panel"
+      },
+      {
+        "type": "paragraph",
+        "text": "The control panel features three endpoints, each launching an HTML-based frontend for collecting camera, IMU, and GPS data. The endpoints /sensormodule/controlpanel/camera (or gps or imu) launch a user interface that retrieves data from the device using the GetFrames() (or GetCoordinates() or GetData()) function. The data is then broadcast via WebSockets, for example, camera data, facilitated by the Camera_Device_Manager, which places the frames into the Frame Queue in the Camera_Broadcast_Manager. These frames are then broadcast to any output through another WebSocket."
+      },
+      {
+        "type": "heading",
+        "level": 4,
+        "id": "control-panel-router",
+        "text": "Control Panel Router"
+      },
+      {
+        "type": "paragraph",
+        "text": "This is router which handles requests concerning the sensor module&apos;s control panel. It imports functions to generate HTML content for camera, GPS, and IMU control panels, incorporating the device address retrieved from DeviceConfiguration. Three endpoints, /camera, /gps, and /imu, are defined to serve these functionalities. Upon accessing any of these endpoints, the respective HTML content is generated and returned as an HTMLResponse, enabling users to interact with the sensor module&apos;s features via a web interface."
+      },
+      {
+        "type": "heading",
+        "level": 4,
+        "id": "camera-frontend-service",
+        "text": "Camera Frontend Service"
+      },
+      {
+        "type": "paragraph",
+        "text": "This generates an HTML page for controlling and broadcasting a camera stream, accessible via the endpoint /sensormodule/controlpanel/camera. The HTML includes a video element to display the camera feed and utilizes JavaScript to manage the camera and WebSocket connections. When the &quot;Start Broadcast&quot; button is clicked, the browser requests access to the use&apos;s camera, streams the video to the video element, and establishes a WebSocket connection to the device address specified by the device_address parameter. The video frames are captured from the canvas element, converted to JPEG blobs, and sent over the WebSocket in array buffer format, enabling live broadcasting. The &quot;Stop Broadcast&quot; button stops the camera and closes the WebSocket connection. The JavaScript ensures efficient handling of the camera stream and WebSocket connection, providing real-time video transmission for remote monitoring through the FastAPI application."
+      },
+      {
+        "type": "heading",
+        "level": 4,
+        "id": "gps-frontend-service",
+        "text": "GPS Frontend Service"
+      },
+      {
+        "type": "paragraph",
+        "text": "This generates an HTML page for controlling and broadcasting a GPS stream, accessible via the endpoint /sensormodule/controlpanel/gps. The HTML page displays the current GPS position, including latitude, longitude, altitude, and accuracy, and utilizes JavaScript to manage the GPS and WebSocket connections. When the &quot;Start Broadcast&quot; button is clicked, the browser requests access to the user&apos;s GPS data through &quot;navigator.geolocation&quot; and establishes a WebSocket connection to the specified device address. The GPS data is continuously sent over the WebSocket connection in JSON format whenever the location updates, and the displayed position information on the page is updated in real-time. The &quot;Stop Broadcast&quot; button stops the GPS broadcasting and closes the WebSocket connection. This setup allows for real-time transmission of GPS data from the client to the server, facilitating remote location tracking through the FastAPI application."
+      },
+      {
+        "type": "heading",
+        "level": 4,
+        "id": "imu-frontend-service",
+        "text": "IMU Frontend Service"
+      },
+      {
+        "type": "paragraph",
+        "text": "This generates an HTML page for controlling and broadcasting a IMU stream, accessible via the endpoint /sensormodule/controlpanel/imu. The HTML content includes real-time IMU information such as acceleration and rotation along the X, Y, and Z axes. JavaScript functions are utilized to establish a WebSocket connection to the specified device address upon clicking the &quot;Start Broadcast&quot; button. The startSendingIMUdata function continuously reads accelerometer and gyroscope data using Google&apos;s generic sensor api, calculates velocity, and packages the IMU data into JSON format for transmission over the WebSocket connection. This setup allows for the real-time transmission of IMU data, including velocity, from the client device to the server, facilitating dynamic motion tracking through the application. The &quot;Stop Broadcast&quot; button halts the IMU broadcasting by closing the WebSocket connection, ensuring efficient management of data transmission. Note: It only works in a device with an IMU (so not your PC or Laptop)."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id": "network-communications",
+        "text": "Network Communications"
+      },
+      {
+        "type": "paragraph",
+        "text": "The network communication layer is crucial for the Broadcast App, enabling the streaming of sensor data via WebSockets. Each sensor type has its own broadcast manager and queue system to handle the data streams efficiently. For instance, the camera data is streamed through WebSockets using get_device_camera_stream (websocket: WebSocket) and get_broadcast_camera_stream (websocket: WebSocket) as shown below. These WebSocket endpoints ensure that the camera frames are continuously broadcasted to connected clients."
+      },
+      {
+        "type": "image",
+        "src": "/images/network-communications.png",
+        "width": 1367,
+        "height": 190,
+        "alt": "Network Communications"
+      },
+      {
+        "type": "heading",
+        "level": 4,
+        "id": "network-communications-router",
+        "text": "Network Communications Router"
+      },
+      {
+        "type": "paragraph",
+        "text": "The network communications router handles WebSocket connections for broadcasting and receiving camera, GPS, and IMU data, utilizing queues to manage data efficiently. Each sensor type (camera, GPS, IMU) has dedicated device and broadcast manager instances that maintain their own data queues (frame_queue, location_queue, data_queue). When a device sends data to the server via the WebSocket endpoints (/ws-device-camera-stream, /ws-device-gps-stream, /ws-device-imu-stream), the data is placed into the respective queue."
+      },
+      {
+        "type": "paragraph",
+        "text": "For broadcasting, clients connect to the WebSocket endpoints (/ws-broadcast-camera-stream, /ws-broadcast-gps-stream, /ws-broadcast-imu-stream). The connected clients can pick up the data from the queues. This ensures that any client connected to the broadcast endpoint can receive the latest data from the queue, enabling real-time data streaming. The queues help decouple the data production (from devices) and data consumption (by clients), ensuring smooth data flow and handling asynchronous communication efficiently. Queues also allow for effective error handling and connection management, ensuring that data is not lost even if a client temporarily disconnects and reconnects."
+      },
+      {
+        "type": "heading",
+        "level": 4,
+        "id": "device-manager",
+        "text": "Device Manager"
+      },
+      {
+        "type": "paragraph",
+        "text": "The DeviceManager class, used for all sensors with different naming conventions, manages WebSocket connections for devices and handles data streaming. It maintains a set of connected WebSocket clients and an asyncio queue (data_queue) for storing data. The add_device_client method accepts a WebSocket connection from a device (control panel), activates the streaming flag, and adds the WebSocket to the set of clients. The remove_device_client method handles device disconnection by deactivating the streaming flag, removing the WebSocket from the set of clients, clearing the set, and putting a None value into the queue to signal the end of the stream. This setup ensures efficient data management and proper signalling of stream termination to any receiving clients."
+      },
+      {
+        "type": "heading",
+        "level": 4,
+        "id": "broadcast-manager",
+        "text": "Broadcast Manager"
+      },
+      {
+        "type": "paragraph",
+        "text": "The BroadcastManager class, used for all sensors with different naming conventions, manages WebSocket connections for broadcasting data to clients. It maintains a set of connected WebSocket clients and an asyncio queue (data_queue) for storing data to be broadcast. The add_broadcast_client method accepts a WebSocket connection from a client, activates the broadcast flag, and adds the WebSocket to the set of clients. The remove_broadcast_client method handles client disconnection by deactivating the broadcast flag, closing the WebSocket, removing it from the set of clients, and placing a None value into the queue to signal the end of the broadcast. The get_clients_count method returns the number of currently connected clients. This setup ensures efficient data management and proper handling of client disconnections, maintaining the integrity of the broadcast stream"
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id": "test-client",
+        "text": "Test Client"
+      },
+      {
+        "type": "paragraph",
+        "text": "The test client component is designed to receive and verify sensor data streams. It includes specific methods for handling each type of sensor data and features a router similar to the control panel, launching HTML-based frontends for each sensor. The ReceiveFrames() method, accessible at the endpoint /sensormodule/testclient/camera, receives camera frames from the broadcast stream, enabling testing and verification of camera data transmission. The ReceiveCoordinates() method, available at the endpoint /sensormodule/testclient/gps, receives GPS coordinates from the broadcast stream, ensuring the accuracy and consistency of location data. The ReceiveData() method, at the endpoint /sensormodule/testclient/imu, receives IMU data from the broadcast stream, allowing for the testing and validation of motion and orientation data. In the main stack, the Vision Python SDK’s camera_data_handler, gps_data_handler, and imu_data_handler serve as the test client, performing similar roles."
+      }
+    ]
+  }
+  

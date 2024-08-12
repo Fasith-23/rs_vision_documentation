@@ -1,0 +1,80 @@
+{
+    "headings": [
+      {
+        "title": "rs_vision",
+        "children": [
+        { "title": "App Architecture" },
+        {"title": "vision next"}
+        ]
+      }
+    ],
+    "content": [
+      {
+        "type": "heading",
+        "level": 1,
+        "id": "rs_vision",
+        "text": "rs_vision"
+      },
+      {
+        "type": "paragraph",
+        "text": "rs_vision is a research node dedicated to the exploration of ideas in the field of Vision. Our focus encompasses computer vision, augmented reality, graphics, image processing, and other related fields. Perhaps my fascination with evolutionary biology stems from the intriguing possibility of communicating in binary with an inanimate object, envisioning a future where human vision is enhanced. Regardless, it's a project that I and a few others have taken on, although I must admit that the others have contributed more (but it's still my website, after all, 🙂). Embark on a journey to discover the expansive world of rs_vision."
+      },
+      {
+        "type": "component0",
+        "name0": "Live Filters",
+        "name1": "GeolocatAr",
+        "name2": "Broadcast App"
+      },
+      {
+        "type": "paragraph",
+        "text": "Up until now, we have explored three different areas: live filters, sensor broadcasting, and location-based AR. Live Filters is a module that utilises camera input to enhance images with various filters, such as canny edge detection and Harris corner detection. The module then broadcasts these filtered images with the user live. The Broadcast App (sensor broadcasting) autonomously streams sensor data from the user's device to the server. GeolocatAr is a location-based AR app. By combining GPS, IMU, and visual data, it accurately determines the user's location and overlays an exciting AR environment on top of it.  All of these fall under the same app architecture for data transmission."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id": "app-architecture",
+        "text": "App Architecture"
+      },
+      {
+        "type": "paragraph",
+        "text": "The rs_vision architecture is designed to deliver a sophisticated experience by integrating multiple components across the frontend, backend services, and external services. This comprehensive system architecture ensures efficient data collection, processing, and utilization to enhance the Vision functionalities."
+      },
+      {
+        "type": "paragraph",
+        "text": "The frontend of the architecture is mainly responsible for user interaction and gathering sensor data from the device. It consists of two main modules: vision_next, which handles user interaction, and vision_sensor_module, which collects sensor data. The backend services play a crucial role in the architecture as they handle the processing of sensor data received from the frontend. The primary service in this layer is the VisionResourceService, which operates on port 5292. The vision_python_sdk is an essential component of the backend services, operating on port 5001. This SDK handles the vital data processing tasks, including sensor fusion and applying filters."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id": "vision-next",
+        "text": "vision_next"
+      },
+      {
+        "type": "paragraph",
+        "text": "Vision_next allows us or future users to test our different research ideas or products. It’s built using NextJS, a ReactJS framework, and utilises TypeScript for the language and Tailwind CSS for styling. At present, it features a home page, a portal, a Live Filters page, and a GeolocatAr page. "
+      },
+      {
+        "type": "image",
+        "src": "/images/vision-next.png",
+        "width": 1029,
+        "height": 371,
+        "alt": "Vision Next"
+      },
+      {
+        "type": "paragraph",
+        "text": "Both pages include start and stop stream buttons that activate the corresponding endpoints in VisionResourceService to initiate and terminate the streaming process, utilising the REST protocol. Once the streaming is initiated, each connection establishes an r-signal connection that subscribes to their respective Hubs in VisionResourceService. This allows for the streaming of live filters and geolocation data to the frontend in real time. The GeolocatAr page showcases the raw data with a slider that that allows users to adjust the amount of previous GPS data used for upsampling. Additionally, it provides a real-time graph that visually displays the location.  On the Live Filters page, you'll find a camera stream where you can easily switch between a variety of available filters."
+      },
+      {
+        "type": "paragraph",
+        "text": "The vision_sensor_module, also referred to as the Broadcast App, VisionResourceService and vision_python_sdk can be found below."
+      },
+      {
+        "type": "component1",
+        "name0":" Vision Sensor Module",
+        "name1": "Vision Resource Service",
+        "name2": "Vision Python SDK"
+      }
+
+    ]
+  }
+  

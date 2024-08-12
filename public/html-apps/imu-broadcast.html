@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMU Broadcast</title>
+</head>
+<body>
+    <h3>IMU Broadcast</h3>
+
+    <div id="imuInfo">
+        <h4>Current IMU Data</h4>
+        <p>Acceleration X: <span id="accelerationX"></span></p>
+        <p>Acceleration Y: <span id="accelerationY"></span></p>
+        <p>Acceleration Z: <span id="accelerationZ"></span></p>
+        <p>Rotation X: <span id="rotationX"></span></p>
+        <p>Rotation Y: <span id="rotationY"></span></p>
+        <p>Rotation Z: <span id="rotationZ"></span></p>
+    </div>
+
+    <script>
+        let ws;
+        let isBroadcasting = false;
+        
+        async function startIMUBroadcast() {
+            if (isBroadcasting) return;
+            try {
+                
+                    startSendingIMUdata();
+                
+            } catch (error) {
+                console.error('Error accessing IMU:', error);
+            }
+        }
+
+        function startSendingIMUdata() {
+            if ( isBroadcasting ){
+                console.error('broadcasting already.');
+                return;
+            }
+            
+            isBroadcasting = true;
+            
+            if ('Accelerometer' in window && 'Gyroscope' in window) {
+                const accelerometer = new Accelerometer({ frequency: 60 });              
+                const gyroscope = new Gyroscope({ frequency: 60 });
+                
+                let accelerometerData = null;
+                let gyroscopeData = null;
+                let lastAccelerationTime = null;
+                let velocityX = 0;
+                let velocityY = 0;
+                let velocityZ = 0;
+                
+                accelerometer.addEventListener('reading', () => {
+                    const accelerationX = accelerometer.x;
+                    const accelerationY = accelerometer.y;
+                    const accelerationZ = accelerometer.z;
+
+                        document.getElementById('accelerationX').textContent = accelerationX.toFixed(2);
+                        document.getElementById('accelerationY').textContent = accelerationY.toFixed(2);
+                        document.getElementById('accelerationZ').textContent = accelerationZ.toFixed(2);
+
+                    accelerometerData = {
+                        type: 'accelerometer',
+                        accelerationX,
+                        accelerationY,
+                        accelerationZ
+                    };
+                    if (gyroscopeData !== null) {
+                        sendData();
+                    }
+                });    
+                gyroscope.addEventListener('reading', () => {
+                    const rotationX = gyroscope.x;
+                    const rotationY = gyroscope.y;
+                    const rotationZ = gyroscope.z;
+                    
+                    document.getElementById('rotationX').textContent = rotationX.toFixed(2);
+                    document.getElementById('rotationY').textContent = rotationY.toFixed(2);
+                    document.getElementById('rotationZ').textContent = rotationZ.toFixed(2);
+                    
+                    gyroscopeData = {
+                        type: 'gyroscope',
+                        rotationX,
+                        rotationY,
+                        rotationZ
+                    };
+                    
+                    if (gyroscopeData !== null) {
+                        sendData();
+                    }
+
+                });
+                
+                accelerometer.start();
+                gyroscope.start();
+                
+                function sendData() {
+                    const now = performance.now();
+                    const timeElapsed = (now - lastAccelerationTime) / 1000; // Convert milliseconds to seconds
+                    lastAccelerationTime = now;
+
+                    velocityX += accelerometerData.accelerationX * timeElapsed;
+                    velocityY += accelerometerData.accelerationY * timeElapsed;
+                    velocityZ += accelerometerData.accelerationZ * timeElapsed;
+                    
+                    const imuData = {
+                        timestamp: now/1000,
+                        accelerometer: accelerometerData,
+                        gyroscope: gyroscopeData,
+                        velocity: {
+                            type: 'velocity',
+                            velocityX,
+                            velocityY,
+                            velocityZ
+                        }
+                    };
+
+                    ws.send(JSON.stringify(imuData));
+
+                    accelerometerData = null;
+                    gyroscopeData = null;
+                    velocityX = 0;
+                    velocityY = 0;
+                    velocityZ = 0;
+                }
+            
+            } else {
+                console.error("Accelerometer and gyroscope not supported");
+            }
+        }
+
+        function stopIMUBroadcast() {
+            isBroadcasting = false;
+            
+        }
+    </script>
+
+    <button onclick="startIMUBroadcast()">Start Broadcast</button>
+    <button onclick="stopIMUBroadcast()">Stop Broadcast</button>
+</body>
+</html>

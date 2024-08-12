@@ -1,0 +1,138 @@
+{
+    "headings": [
+      {
+        "title": "Sensor Fusion",
+        "children": [
+        { "title": "Existing Techniques" },
+        {
+          "title": "Our Solution",
+          "children" : [
+            {
+              "title":"Kalman Filter Algorithm",
+              "children" : [
+                { "title":"Initial Parameters"},
+                { "title":"Prediction Step"},
+                { "title":"Update Step"}
+              ] 
+            },
+            {
+              "title":"Implementation",
+              "children" : [
+                { "title":"Axis Seperation"},
+                { "title":"Prediction & Update"},
+                { "title":"Benefits"}
+              ] 
+            },
+            {
+              "title":"Data Synchronisation",
+              "children" : [
+                { "title":"Sampling Rate Disparity"},
+                { "title":"Challenges"},
+                { "title":"Upsampling Technique"},
+                { "title":"Temporal Coherence"}
+              ] 
+            }
+
+          ] 
+        }
+          
+        ]
+      }
+    ],
+    "content": [
+      {
+        "type": "heading",
+        "level": 1,
+        "id": "sensor-fusion",
+        "text": "Sensor Fusion"
+      },
+      {
+        "type": "paragraph",
+        "text": "Sensor fusion is the process of combining sensor data or data derived from disparate sources so that the resulting information has less uncertainty than would be possible if these sources were used individually. In our case, GPS provides absolute position information by triangulating signals from satellites. However, GPS data alone can be noisy and less reliable in certain environments, such as urban canyons or indoors, where satellite signals may be weak or obstructed. On the other hand, IMU sensors, which include accelerometers and gyroscopes, provide high-frequency, relative motion data that can fill in the gaps when GPS signals are unreliable. By fusing data from both GPS and IMU, we can achieve continuous and accurate positioning and motion tracking."
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id": "existing-techniques",
+        "text": "Existing Techniques"
+      },
+      {
+        "type": "paragraph",
+        "text": "Several techniques can be employed for sensor fusion, ranging from simple to complex algorithms. The most commonly used methods include Kalman Filtering, Extended Kalman Filtering (EKF), and Particle Filtering. Kalman Filtering is a powerful statistical method that estimates the state of a dynamic system from noisy sensor data. It works by modeling the state of the system and using a series of measurements over time to predict the state and correct it with incoming sensor data. EKF extends this approach to nonlinear systems by linearizing the state and measurement models. Particle Filtering, on the other hand, employs a set of samples (particles) to represent the probability distribution of the system state, which is particularly effective in highly nonlinear or non-Gaussian scenarios. We used a Kalman Filtering algorithm for fusing data from GPS and IMU sensors to achieve more accurate positioning and velocity tracking. "
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id": "our-solution",
+        "text": "Our Solution"
+      },
+      {
+        "type": "video",
+        "src": "/videos/result-1.mp4",
+        "width": 1480,
+        "height": 598,
+        "alt": "Sensor Fusion"
+      },
+      {
+        "type": "paragraph",
+        "text": "In the context of our sensor fusion solution, we utilize the Kalman Filter to merge data from GPS, which provides geolocation, and IMU, which provides acceleration and orientation. Following sections will describe the algorithm in detail:"
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id":   "kalman-filter-algorithm",
+        "text": "Kalman Filter Algorithm"
+      },
+      {
+        "type": "accordion",
+        "sections": [
+          {
+            "title": "Initial Parameters",
+            "items": "The Kalman Filter is initialized with several parameters: the initial position and velocity, the standard deviations of the position and acceleration measurements, and the current timestamp. These parameters establish the starting point and the uncertainties associated with the initial measurements. The state vector represents the current position and velocity, while the identity matrix is used in various calculations to maintain the integrity of the state vector. The state covariance matrix represents the initial guess of the uncertainties in the state, and the transformation matrix helps convert sensor data into the state space. The process noise covariance matrix accounts for uncertainties in the accelerometer measurements, and the measurement noise covariance matrix accounts for uncertainties in the GPS measurements. The current time tracks the timestamp of the latest state update."
+          },
+          {
+            "title": "Prediction Step",
+            "items": "The prediction step uses the current state and the acceleration data to forecast the state at the next time step. First, the time difference since the last update is calculated. Next, state transition matrices are defined to describe how the state evolves over time and how the acceleration impacts the state. The state vector is then updated using the current state, the state transition matrices, and the control input (acceleration). Finally, the state covariance matrix is updated to reflect the increased uncertainty over time."
+          },
+          {
+            "title": "Update Step",
+            "items": "The update step refines the predicted state using new measurements from the GPS. The process begins by calculating the measurement residual, which is the difference between the actual GPS measurement and the predicted state. The residual covariance is then determined to assess the combined uncertainty of the predicted state and the new measurement. The Kalman Gain, which is the optimal weighting factor for incorporating the measurement residual into the state estimate, is computed next. The state vector is adjusted with the measurement residual weighted by the Kalman Gain, resulting in a more accurate state estimate. Finally, the state covariance matrix is updated to reflect the reduced uncertainty after incorporating the new measurement."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id":   "implementation",
+        "text": "Implementation"
+      },
+      {
+        "type": "accordion",
+        "sections": [
+          {
+            "title": "Axis Seperation",
+            "items": "Our implementation involves creating separate Kalman Filters for each of the three spatial axes: East, North, and Up. Each filter operates independently but follows the same algorithmic steps described above. The filters for the East, North, and Up axes are initialised using the initial GPS and IMU data. GPS and IMU data are continuously received from the sensors."
+          },
+          {
+            "title": "Prediction & Update",
+            "items": "Each filter uses the IMU data to predict the new state for its respective axis. When GPS data is available, it is used to update the state estimates in all three filters. The predicted positions and velocities from the filters are then converted back into geographic coordinates. This conversion allows the application to display the precise location and movement of the device in real time."
+          },
+          {
+            "title": "Benefits",
+            "items": "The Kalman Filter’s ability to minimise the mean squared error of the state estimate makes it highly effective for applications requiring precise tracking. By leveraging both GPS and IMU data, the filter compensates for the weaknesses of each sensor, providing a more accurate and reliable positioning solution for our augmented reality application, GeolocatAr."
+          }
+        ]
+      },
+      {
+        "type": "heading",
+        "level": 2,
+        "id":   "data-synchronisation",
+        "text": "Data Synchronisation"
+      },
+      {
+        "type": "paragraph",
+        "text":"The next critical step in our sensor fusion process is data synchronisation, essential due to the differing sampling rates of GPS and IMU sensors. GPS sensors usually provide positional updates at 1 Hz (once per second), while IMU sensors can sample accelerations and rotational velocities at frequencies exceeding 100 Hz. This disparity can cause misalignment in the data streams, making it difficult to combine the data effectively for accurate position and velocity estimation. To address this, we employ a technique called upsampling, where we increase the frequency of the GPS data to match that of the IMU data. Upsampling the GPS data involves interpolating additional GPS data points to fill the gaps between the original GPS readings. This process ensures that there is a GPS measurement available for each IMU sample, allowing the Kalman Filter to perform updates more frequently and accurately. By aligning the timestamps of GPS and IMU data, we can improve the temporal coherence of our sensor fusion, leading to smoother and more reliable tracking results. In the upcoming section, we will delve into the details of the GPS upsampling process, exploring various interpolation methods and their implementation within our system."
+      }
+    ]
+  }
+  

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Camera Broadcast</title>
+    <style>
+        video {
+            width: 90%;
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h3>Camera Broadcast</h3>
+
+    <video id="cameraPreview" autoplay></video>
+
+    <script>
+        let ws;
+        let mediaStream;
+        let isBroadcasting = false;
+
+        async function startCameraBroadcast() {{
+            if (isBroadcasting) return;
+
+            const videoElement = document.getElementById('cameraPreview');
+
+            try {{
+                mediaStream = await navigator.mediaDevices.getUserMedia({video: true });
+                videoElement.srcObject = mediaStream;
+
+                ws = new WebSocket(`wss://{device_address}:5002/sensormodule/networkcommunications/ws-device-camera-stream`);
+                ws.binaryType = 'arraybuffer';
+                ws.onopen = () => {{
+                    console.log('WebSocket connection established');
+                    startSendingCameraFrames(videoElement); // Pass videoElement to the function
+                }};
+                ws.onerror = (error) => {{
+                    console.error('WebSocket error:', error);
+                }};
+            }} catch (error) {{
+                console.error('Error accessing camera:', error);
+            }}
+        }}
+
+        async function startSendingCameraFrames(videoElement) {{
+            if (!mediaStream || isBroadcasting) {{
+                console.error('Media stream not available or broadcasting already.');
+                return;
+            }}
+
+            isBroadcasting = true;
+
+            try {{
+                const canvas = document.createElement('canvas');
+                const context = canvas.getContext('2d');
+                const videoTracks = mediaStream.getVideoTracks();
+
+                const sendFrame = async () => {{
+                    if (!isBroadcasting) return; // Stop sending frames if broadcasting is stopped
+
+                    if (videoTracks.length === 0) {{
+                        console.error('No video tracks available.');
+                        return;
+                    }}
+
+                    canvas.width = videoTracks[0].getSettings().width;
+                    canvas.height = videoTracks[0].getSettings().height;
+                    context.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+
+                    // Convert canvas content to Blob
+                    canvas.toBlob(async blob => {{
+                        if (!blob) {{
+                            console.error('Error converting canvas content to Blob.');
+                            return;
+                        }}
+
+                        // Read the Blob as raw bytes
+                        const reader = new FileReader();
+                        reader.onload = () => {{
+                            // Send the raw bytes over WebSocket
+                            ws.send(reader.result);
+                        }};
+                        reader.readAsArrayBuffer(blob);
+                    }}, 'image/jpeg');
+
+                    // Schedule next frame send after 30ms if broadcasting is still active
+                    if (isBroadcasting) {{
+                        setTimeout(sendFrame, 100); // Send frame every 30 milliseconds
+                    }}
+                }};
+
+                // Start sending frames
+                sendFrame();
+            }} catch (error) {{
+                console.error('Error sending camera frames:', error);
+            }}
+        }}
+
+        async function stopCameraBroadcast() {{
+            isBroadcasting = false;
+
+            if (mediaStream) {{
+                mediaStream.getTracks().forEach(track => track.stop());
+            }}
+
+            if (ws && ws.readyState === WebSocket.OPEN) {{
+                ws.close();
+                console.log('WebSocket connection closed');
+            }}
+        }}
+    </script>
+
+    <button onclick="startCameraBroadcast()">Start Broadcast</button>
+    <button onclick="stopCameraBroadcast()">Stop Broadcast</button>
+</body>
+</html>
