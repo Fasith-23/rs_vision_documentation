@@ -20,7 +20,7 @@ const Geolocatar: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('/text/geolocatar.json');
+      const response = await fetch('/public/text/geolocatar.json');
       const data: PageData = await response.json();
       setPageData(data);
       setHeadings(data.headings);
