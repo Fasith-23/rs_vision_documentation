@@ -4,9 +4,9 @@ import { useState } from 'react';
 const BroadcastSection = () => {
   const [currentIframe, setCurrentIframe] = useState(1);
   const iframes = [
-    { src: '/html-apps/camera-broadcast.html', title: 'Camera Broadcast' },
-    { src: '/html-apps/gps-broadcast.html', title: 'GPS Broadcast' },
-    { src: '/html-apps/imu-broadcast.html', title: 'IMU Broadcast' }
+    { src: 'https://fasith-23.github.io/rs_vision_documentation/html-apps/camera-broadcast.html', title: 'Camera Broadcast' },
+    { src: 'https://fasith-23.github.io/rs_vision_documentation/html-apps/gps-broadcast.html', title: 'GPS Broadcast' },
+    { src: 'https://fasith-23.github.io/rs_vision_documentation/html-apps/imu-broadcast.html', title: 'IMU Broadcast' }
   ];
 
   const handlePrev = () => {

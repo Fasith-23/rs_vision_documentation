@@ -37,7 +37,7 @@
       },
       {
         "type": "video",
-        "src": "/videos/GPS Upsampling-result-1.mp4",
+        "src": "https://fasith-23.github.io/rs_vision_documentation/videos/gps-upsampling-result-1.mp4",
         "width": 1480,
         "height": 598,
         "alt": "GPS Upsampling"
@@ -48,7 +48,7 @@
       },
       {
         "type": "image",
-        "src": "/images/GPS Upsampling-result-1.png",
+        "src": "https://fasith-23.github.io/rs_vision_documentation/images/gps-upsampling-result-1.png",
         "width": 1480,
         "height": 500,
         "alt": "GPS Upsampling"

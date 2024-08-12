@@ -39,7 +39,7 @@
       },
       {
         "type": "image",
-        "src": "/images/vision-resource-service.png",
+        "src": "https://fasith-23.github.io/rs_vision_documentation/images/vision-resource-service.png",
         "width": 1199,
         "height": 446,
         "alt": "Vision Resource Service"
@@ -56,7 +56,7 @@
       },
       {
         "type": "image",
-        "src": "/images/portal-vsr.png",
+        "src": "https://fasith-23.github.io/rs_vision_documentation/images/portal-vsr.png",
         "width": 1288,
         "height": 354,
         "alt": "Portal"
@@ -73,7 +73,7 @@
       },
       {
         "type": "image",
-        "src": "/images/geolocatar-vsr.png",
+        "src": "https://fasith-23.github.io/rs_vision_documentation/images/geolocatar-vsr.png",
         "width": 1831,
         "height": 494,
         "alt": "GeolocatAr"

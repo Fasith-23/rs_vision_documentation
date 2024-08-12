@@ -55,7 +55,7 @@
       },
       {
         "type": "image",
-        "src": "/images/vision-next.png",
+        "src": "https://fasith-23.github.io/rs_vision_documentation/images/vision-next.png",
         "width": 1029,
         "height": 371,
         "alt": "Vision Next"

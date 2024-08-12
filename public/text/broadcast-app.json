@@ -38,7 +38,7 @@
       },
       {
         "type": "image",
-        "src": "/images/broadcast-app.png",
+        "src": "https://fasith-23.github.io/rs_vision_documentation/images/broadcast-app.png",
         "width": 629,
         "height": 310,
         "alt": "Broadcast App"
@@ -69,7 +69,7 @@
       },
       {
         "type": "image",
-        "src": "/images/control-panel.png",
+        "src": "https://fasith-23.github.io/rs_vision_documentation/images/control-panel.png",
         "width": 860,
         "height": 160,
         "alt": "Control Panel"
@@ -130,7 +130,7 @@
       },
       {
         "type": "image",
-        "src": "/images/network-communications.png",
+        "src": "https://fasith-23.github.io/rs_vision_documentation/images/network-communications.png",
         "width": 1367,
         "height": 190,
         "alt": "Network Communications"

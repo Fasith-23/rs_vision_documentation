@@ -68,7 +68,7 @@
       },
       {
         "type": "video",
-        "src": "/videos/result-1.mp4",
+        "src": "https://fasith-23.github.io/rs_vision_documentation/videos/geolocatar-result-1.mp4",
         "width": 1480,
         "height": 598,
         "alt": "Sensor Fusion"

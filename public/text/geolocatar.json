@@ -37,7 +37,7 @@
       },
       {
         "type": "video",
-        "src": "/videos/geolocatar-result-1.mp4",
+        "src": "https://fasith-23.github.io/rs_vision_documentation/videos/geolocatar-result-1.mp4",
         "width": 1480,
         "height": 598,
         "alt": "GeolocatAr"
@@ -48,7 +48,7 @@
       },
       {
         "type": "image",
-        "src": "/images/geolocatar-result-1.png",
+        "src": "https://fasith-23.github.io/rs_vision_documentation/images/geolocatar-result-1.png",
         "width": 1480,
         "height": 500,
         "alt": "GeolocatAr"
@@ -71,7 +71,7 @@
       },
       {
         "type": "image",
-        "src": "/images/methodology.png",
+        "src": "https://fasith-23.github.io/rs_vision_documentation/images/methodology.png",
         "width": 3078,
         "height": 1120,
         "alt": "Methodology"
