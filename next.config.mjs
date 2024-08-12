@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    basePath: "/rs_vision_documentation",
     output: "export",  // <=== enables static exports
+    basePath: process.env.NODE_ENV === "production" ? "": undefined,
     reactStrictMode: true,
     images: { unoptimized: true }
 };
