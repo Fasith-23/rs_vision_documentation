@@ -35,7 +35,7 @@
       },
       {
         "type": "image",
-        "src": "/images/vision-python-sdk.png",
+        "src": "https://fasith-23.github.io/rs_vision_documentation/public/images/vision-python-sdk.png",
         "width": 1199,
         "height": 490,
         "alt": "Vision Python SDK"
@@ -62,7 +62,7 @@
       },
       {
         "type": "image",
-        "src": "/images/geolocatar-vps.png",
+        "src": "https://fasith-23.github.io/rs_vision_documentation/public/images/geolocatar-vps.png",
         "width": 1579,
         "height": 494,
         "alt": "GeolocatAr"
