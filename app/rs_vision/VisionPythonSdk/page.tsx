@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useHeadings } from '../../context/heading-context';
 import Image from 'next/image';
 import Link from 'next/link';
+import pageData from "../../../public/text/vision-python-sdk.json"
 
 interface ContentItem {
   type: string;
@@ -15,19 +16,13 @@ interface PageData {
 }
 
 const VisionPythonSdk: React.FC = () => {
-  const [pageData, setPageData] = useState<PageData | null>(null);
   const { setHeadings } = useHeadings();
 
+  // Set the pageData directly from the import
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch('/text/vision-python-sdk.json');
-      const data: PageData = await response.json();
-      setPageData(data);
-      setHeadings(data.headings);
-    };
-
-    fetchData();
+    setHeadings(pageData.headings);
   }, [setHeadings]);
+
 
   if (!pageData) {
     return <div className='bg-white sepia'>Loading...</div>;

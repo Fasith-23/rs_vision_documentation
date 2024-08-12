@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useHeadings } from '../context/heading-context';
 import Image from 'next/image';
 import Link from 'next/link';
-
-
+// Importing the JSON data directly
+import pageData from '../../public/text/rs-vision.json'; 
 
 const RsVision: React.FC = () => {
   interface ContentItem {
@@ -16,18 +16,12 @@ const RsVision: React.FC = () => {
     headings: Array<{ title: string; children?: any[] }>;
     content: ContentItem[];
   }
-  const [pageData, setPageData] = useState<PageData | null>(null);
+
   const { setHeadings } = useHeadings();
 
+  // Set the pageData directly from the import
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch('/text/rs-vision.json');
-      const data: PageData = await response.json();
-      setPageData(data);
-      setHeadings(data.headings);
-    };
-
-    fetchData();
+    setHeadings(pageData.headings);
   }, [setHeadings]);
 
   if (!pageData) {
@@ -48,22 +42,22 @@ const RsVision: React.FC = () => {
               <Image src={item.src} width={item.width} height={item.height} alt={item.alt} />
             </div>
           );
-          case 'component0':
-              return (
-                <div key={index} className="my-8 flex justify-between">
-                  <Link href='/LiveFilters'><div className='px-8 py-4 border-4  hover:text-gray-500 hover:border-gray-500 border-black rounded-3xl'>{item.name0}</div></Link>
-                  <Link href='/Geolocatar'><div className='px-8 py-4 border-4   hover:text-gray-500 hover:border-gray-500 border-black rounded-3xl'>{item.name1}</div></Link>
-                  <Link href='/BroadcastApp'><div className='px-8 py-4 border-4 hover:text-gray-500 hover:border-gray-500 border-black rounded-3xl'>{item.name2}</div></Link>
-                </div>
-              );
-          case 'component1':
-            return (
-              <div key={index} className="py-4 flex justify-between">
-                <Link href='/BroadcastApp'><div className='px-8 py-4 border-4           text-sm hover:text-gray-500 hover:border-gray-500 border-black rounded-3xl'>{item.name0}</div></Link>
-                <Link href='/rs_vision/VisionResourceService'><div className='px-8 py-4 border-4  text-sm hover:text-gray-500 hover:border-gray-500 border-black rounded-3xl'>{item.name1}</div></Link>
-                <Link href='/rs_vision/VisionPythonSdk'><div className='px-8 py-4 border-4      text-sm hover:text-gray-500 hover:border-gray-500 border-black rounded-3xl'>{item.name2}</div></Link>
-              </div>
-            );
+        case 'component0':
+          return (
+            <div key={index} className="my-8 flex justify-between">
+              <Link href='/LiveFilters'><div className='px-8 py-4 border-4 hover:text-gray-500 hover:border-gray-500 border-black rounded-3xl'>{item.name0}</div></Link>
+              <Link href='/Geolocatar'><div className='px-8 py-4 border-4 hover:text-gray-500 hover:border-gray-500 border-black rounded-3xl'>{item.name1}</div></Link>
+              <Link href='/BroadcastApp'><div className='px-8 py-4 border-4 hover:text-gray-500 hover:border-gray-500 border-black rounded-3xl'>{item.name2}</div></Link>
+            </div>
+          );
+        case 'component1':
+          return (
+            <div key={index} className="py-4 flex justify-between">
+              <Link href='/BroadcastApp'><div className='px-8 py-4 border-4 text-sm hover:text-gray-500 hover:border-gray-500 border-black rounded-3xl'>{item.name0}</div></Link>
+              <Link href='/rs_vision/VisionResourceService'><div className='px-8 py-4 border-4 text-sm hover:text-gray-500 hover:border-gray-500 border-black rounded-3xl'>{item.name1}</div></Link>
+              <Link href='/rs_vision/VisionPythonSdk'><div className='px-8 py-4 border-4 text-sm hover:text-gray-500 hover:border-gray-500 border-black rounded-3xl'>{item.name2}</div></Link>
+            </div>
+          );
       
         default:
           return null;
@@ -73,10 +67,9 @@ const RsVision: React.FC = () => {
 
   return (
     <div className="font-merriweather text-black bg-white sepia">
-        <div className='mx-72'>
+      <div className='mx-72'>
         {renderContent(pageData.content)}
-        </div>
-      
+      </div>
     </div>
   );
 };

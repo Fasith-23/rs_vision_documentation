@@ -2,12 +2,10 @@
 import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
 import { useHeadings } from '../context/heading-context';
-//import BroadcastSection from "./broadcast-section";
+import BroadcastSection from "./broadcast-section";
 import Image from 'next/image';
+import pageData from "../../public/text/broadcast-app.json"
 
-const BroadcastSection = dynamic(() => import("./broadcast-section"), {
-  ssr: false,
-  });
 
 interface ContentItem {
   type: string;
@@ -20,19 +18,13 @@ interface PageData {
 }
 
 const BroadcastApp: React.FC = () => {
-  const [pageData, setPageData] = useState<PageData | null>(null);
   const { setHeadings } = useHeadings();
 
+  // Set the pageData directly from the import
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch('/text/broadcast-app.json');
-      const data: PageData = await response.json();
-      setPageData(data);
-      setHeadings(data.headings);
-    };
-
-    fetchData();
+    setHeadings(pageData.headings);
   }, [setHeadings]);
+
 
   if (!pageData) {
     return <div className='bg-white sepia'>Loading...</div>;
